@@ -8,17 +8,17 @@
 
 ### 🐧 Linux/macOS (Recommended)
 ```bash
-curl -fsSL https://get.homei.io/install.sh | bash
+curl -fsSL https://get.homieos.com/install.sh | bash
 ```
 
 ### 🪟 Windows (PowerShell)
 ```powershell
-iwr -useb https://get.homei.io/install.ps1 | iex
+iwr -useb https://get.homieos.com/install.ps1 | iex
 ```
 
 ### 🐳 Docker Compose (Any Platform)
 ```bash
-git clone https://github.com/homei/orchestrator.git
+git clone https://github.com/homie/orchestrator.git
 cd orchestrator
 make quick-start
 ```
@@ -33,7 +33,7 @@ make quick-start
 
 Open your browser and visit **http://localhost:8080**
 
-You'll see the beautiful Homei Dashboard with:
+You'll see the beautiful Homie Dashboard with:
 - 🟢 **System Status** - All green lights!
 - 📊 **Resource Usage** - CPU, Memory, Disk at a glance
 - 🐳 **Container Overview** - Your managed services
@@ -51,10 +51,10 @@ ports:
 volumes:
   - "./data/nginx:/usr/share/nginx/html"
 environment:
-  WELCOME_MESSAGE: "Hello from Homei Orchestrator!"
+  WELCOME_MESSAGE: "Hello from Homie Orchestrator!"
 labels:
-  io.homei.category: "web"
-  io.homei.backup: "false"
+  io.homie.category: "web"
+  io.homie.backup: "false"
 ```
 
 Click **"Deploy"** and watch the magic happen! ✨
@@ -75,7 +75,7 @@ Navigate to the **"Monitoring"** tab to see:
 
 Go to the **"Services"** tab, find your hello-world service, and click **"Stop"**.
 
-Watch as Homei automatically:
+Watch as Homie automatically:
 1. 🚨 Detects the service is down
 2. 🏥 Attempts health recovery
 3. 🔄 Restarts the service automatically
@@ -92,15 +92,15 @@ Watch as Homei automatically:
 ```yaml
 # File: templates/ai-platform.yaml
 services:
-  homei_ai:
-    image: "homei/ai:latest"
+  homie_ai:
+    image: "homie/ai:latest"
     ports: ["8080:8080", "3000:3000", "11434:11434"]
-    volumes: ["./data/homei_ai:/data"]
+    volumes: ["./data/homie_ai:/data"]
     environment:
       OLLAMA_BASE_URL: "http://ollama:11434"
     labels:
-      io.homei.category: "ai"
-      io.homei.backup: "daily"
+      io.homie.category: "ai"
+      io.homie.backup: "daily"
       
   ollama:
     image: "ollama/ollama:latest"
@@ -125,7 +125,7 @@ services:
     volumes: ["./data/mosquitto:/mosquitto"]
 ```
 
-**Deploy with:** `homei template deploy smart-home`
+**Deploy with:** `homie template deploy smart-home`
 
 ### 🔧 Development Environment
 
@@ -150,7 +150,7 @@ services:
     depends_on: ["postgres"]
 ```
 
-**Deploy with:** `homei template deploy dev-stack`
+**Deploy with:** `homie template deploy dev-stack`
 
 ### 📊 Monitoring & Analytics
 
@@ -170,7 +170,7 @@ services:
     volumes: ["./config/prometheus:/etc/prometheus"]
 ```
 
-**Deploy with:** `homei template deploy monitoring`
+**Deploy with:** `homie template deploy monitoring`
 
 ---
 
@@ -180,48 +180,48 @@ services:
 
 ```bash
 # Check orchestrator status
-homei status
+homie status
 
 # List all services  
-homei services list
+homie services list
 
 # Deploy a service
-homei service deploy myapp.yaml
+homie service deploy myapp.yaml
 
 # Scale a service
-homei service scale myapp --replicas=3
+homie service scale myapp --replicas=3
 
 # View logs (with follow)
-homei logs myapp --follow --tail=100
+homie logs myapp --follow --tail=100
 
 # Backup everything
-homei backup create --name="before-update"
+homie backup create --name="before-update"
 
 # Update the orchestrator
-homei self-update
+homie self-update
 
 # Get help for any command
-homei help service
+homie help service
 ```
 
 ### Power User Shortcuts
 
 ```bash
 # Quick health check of everything
-homei health --all
+homie health --all
 
 # Restart all services in a category
-homei service restart --category="smart-home"
+homie service restart --category="smart-home"
 
 # Export service configuration
-homei service export myapp > myapp-backup.yaml
+homie service export myapp > myapp-backup.yaml
 
 # Bulk operations
-homei service stop --tag="development"
-homei service start --tag="development"
+homie service stop --tag="development"
+homie service start --tag="development"
 
 # Resource monitoring
-homei stats --real-time
+homie stats --real-time
 ```
 
 ---
@@ -257,9 +257,9 @@ services:
     image: "myapp:latest"
     volumes: ["./data/app:/data"]
     labels:
-      io.homei.backup: "daily"        # 📅 Daily backups
-      io.homei.backup.retain: "30"    # 🗂️ Keep 30 days
-      io.homei.backup.priority: "high" # 🚨 High priority
+      io.homie.backup: "daily"        # 📅 Daily backups
+      io.homie.backup.retain: "30"    # 🗂️ Keep 30 days
+      io.homie.backup.priority: "high" # 🚨 High priority
 ```
 
 ### 🔥 Hot Reloading for Development
@@ -274,8 +274,8 @@ services:
     environment:
       NODE_ENV: "development"
     labels:
-      io.homei.dev: "true"            # 🚀 Development mode
-      io.homei.hot-reload: "true"     # ⚡ Auto-restart on changes
+      io.homie.dev: "true"            # 🚀 Development mode
+      io.homie.hot-reload: "true"     # ⚡ Auto-restart on changes
 ```
 
 ### 🌍 Environment-Specific Configuration
@@ -301,7 +301,7 @@ services:
       HOT_RELOAD: "true"
 ```
 
-**Deploy with environment:** `homei deploy --env=development`
+**Deploy with environment:** `homie deploy --env=development`
 
 ---
 
@@ -343,25 +343,25 @@ You've just learned:
 
 ```bash
 # Check orchestrator logs
-homei logs orchestrator --tail=50
+homie logs orchestrator --tail=50
 
 # Verify system health
-homei doctor
+homie doctor
 
 # Test connectivity
-homei test --all
+homie test --all
 
 # Generate debug report
-homei debug-report > debug.txt
+homie debug-report > debug.txt
 ```
 
 ### 🤝 Get Human Help
 
 - 💬 **Discord:** Instant help from the community
-- 📧 **Email:** support@homei.io for technical issues
-- 📖 **Docs:** docs.homei.io for detailed guides
-- 🎥 **Video Tutorials:** youtube.com/homei-io
+- 📧 **Email:** support@homieos.com for technical issues
+- 📖 **Docs:** docs.homieos.com for detailed guides
+- 🎥 **Video Tutorials:** youtube.com/homie-io
 
 ---
 
-*🎉 Welcome to the Homei family! You're about to build some incredible things.* 🚀
+*🎉 Welcome to the Homie family! You're about to build some incredible things.* 🚀

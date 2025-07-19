@@ -1,6 +1,6 @@
 # Troubleshooting Guide
 
-This guide helps resolve common issues with the Homei Orchestrator.
+This guide helps resolve common issues with the Homie Orchestrator.
 
 ## Common Issues
 
@@ -50,7 +50,7 @@ docker ps | grep postgres
 docker-compose logs postgres
 
 # Test database connectivity
-docker exec -it postgres psql -U homei -d homei
+docker exec -it postgres psql -U homie -d homie
 
 # Restart PostgreSQL
 docker-compose restart postgres
@@ -137,7 +137,7 @@ curl http://localhost:8080/health/live
 1. **Database Health**:
    ```bash
    # Test database connection
-   docker exec -it postgres psql -U homei -d homei -c "SELECT 1;"
+   docker exec -it postgres psql -U homie -d homie -c "SELECT 1;"
    ```
 
 2. **Redis Health**:
@@ -168,7 +168,7 @@ sudo systemctl status docker
 docker exec -it orchestrator ls -la /var/run/docker.sock
 
 # Check container labels
-docker ps --filter "label=io.homei.managed=true"
+docker ps --filter "label=io.homie.managed=true"
 ```
 
 **Solutions**:
@@ -184,7 +184,7 @@ docker ps --filter "label=io.homei.managed=true"
    ```bash
    # Check Docker networks
    docker network ls
-   docker network inspect homei_network
+   docker network inspect homie_network
    ```
 
 ### Configuration Issues
@@ -244,7 +244,7 @@ echo "ORCHESTRATOR_SECRET_KEY=your-secret-key" > .env
 curl http://localhost:8080/api/v1/services
 
 # Check container status
-docker ps -a --filter "label=io.homei.managed=true"
+docker ps -a --filter "label=io.homie.managed=true"
 ```
 
 **Common Issues**:
@@ -312,7 +312,7 @@ docker exec -it orchestrator ps aux
 time curl http://localhost:8080/health
 
 # Check database performance
-docker exec -it postgres psql -U homei -d homei -c "
+docker exec -it postgres psql -U homie -d homie -c "
 SELECT query, mean_exec_time, calls 
 FROM pg_stat_statements 
 ORDER BY mean_exec_time DESC 
@@ -454,7 +454,7 @@ sudo ufw status
 ```bash
 # Check Docker networks
 docker network ls
-docker network inspect homei_network
+docker network inspect homie_network
 
 # Test DNS resolution
 docker exec -it orchestrator nslookup postgres
@@ -463,8 +463,8 @@ docker exec -it orchestrator nslookup postgres
 **Solutions**:
 ```bash
 # Recreate Docker network
-docker network rm homei_network
-docker network create homei_network
+docker network rm homie_network
+docker network create homie_network
 
 # Restart all services
 docker-compose down
@@ -489,7 +489,7 @@ logging:
 docker-compose logs -f orchestrator
 
 # System logs
-journalctl -u homei-orchestrator
+journalctl -u homie-orchestrator
 
 # Docker daemon logs
 journalctl -u docker
@@ -514,7 +514,7 @@ docker-compose logs orchestrator | grep ERROR
 docker-compose logs -f --tail=100 orchestrator
 
 # Search for specific patterns
-journalctl -u homei-orchestrator | grep "database"
+journalctl -u homie-orchestrator | grep "database"
 
 # Export logs for analysis
 docker-compose logs orchestrator > orchestrator.log
@@ -529,7 +529,7 @@ Create `scripts/health-check.sh`:
 ```bash
 #!/bin/bash
 
-echo "=== Homei Orchestrator Health Check ==="
+echo "=== Homie Orchestrator Health Check ==="
 
 # Check Docker
 echo "Checking Docker..."
@@ -631,7 +631,7 @@ docker-compose down
 docker system prune -f
 
 # Recreate network
-docker network create homei_network
+docker network create homie_network
 
 # Restore configuration
 cp config/orchestrator.yaml.template config/orchestrator.yaml
@@ -661,7 +661,7 @@ sudo cp -r /data/postgres /data/postgres.backup.$(date +%Y%m%d_%H%M%S)
 
 # Reset database
 docker-compose stop postgres
-docker volume rm homei_orchestrator_postgres_data
+docker volume rm homie_orchestrator_postgres_data
 docker-compose up -d postgres
 
 # Wait for database
@@ -705,5 +705,5 @@ Include this information when reporting issues:
 
 # Recent logs
 docker-compose logs --tail=500 orchestrator > orchestrator.log
-journalctl -u homei-orchestrator --since "1 hour ago" > systemd.log
+journalctl -u homie-orchestrator --since "1 hour ago" > systemd.log
 ```

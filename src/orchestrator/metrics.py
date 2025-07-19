@@ -1,5 +1,5 @@
 """
-Metrics and monitoring for Homei Orchestrator
+Metrics and monitoring for Homie Orchestrator
 
 Provides Prometheus-style metrics for monitoring the orchestrator.
 """

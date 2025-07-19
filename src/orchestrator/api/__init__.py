@@ -24,7 +24,7 @@ class ContainerActionRequest(BaseModel):
 async def get_orchestrator_info():
     """Get orchestrator information"""
     return OrchestratorInfo(
-        name="Homei Orchestrator",
+        name="Homie Orchestrator",
         version="1.0.0",
         status="running"
     )

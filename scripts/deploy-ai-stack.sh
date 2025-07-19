@@ -1,14 +1,14 @@
 #!/bin/bash
 
-# Homei AI Stack Deployment Script
-# This script deploys the homei_ai stack managed by the orchestrator
+# Homie AI Stack Deployment Script
+# This script deploys the homie_ai stack managed by the orchestrator
 
 set -euo pipefail
 
 # Configuration
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-HOMEI_AI_PATH="$PROJECT_ROOT/../homei_ai"
+HOMEI_AI_PATH="$PROJECT_ROOT/../homie_ai"
 
 # Colors for output
 RED='\033[0;31m'
@@ -50,9 +50,9 @@ check_prerequisites() {
         exit 1
     fi
     
-    # Check if homei_ai directory exists
+    # Check if homie_ai directory exists
     if [ ! -d "$HOMEI_AI_PATH" ]; then
-        log_error "homei_ai directory not found at $HOMEI_AI_PATH"
+        log_error "homie_ai directory not found at $HOMEI_AI_PATH"
         exit 1
     fi
     
@@ -70,7 +70,7 @@ pull_ai_models() {
     log_info "Waiting for Ollama to be ready..."
     timeout=60
     while [ $timeout -gt 0 ]; do
-        if docker exec homei_ollama ollama list &> /dev/null; then
+        if docker exec homie_ollama ollama list &> /dev/null; then
             break
         fi
         sleep 2
@@ -84,25 +84,25 @@ pull_ai_models() {
     
     # Pull default models
     log_info "Pulling default AI models..."
-    docker exec homei_ollama ollama pull llama2:7b || log_warning "Failed to pull llama2:7b"
-    docker exec homei_ollama ollama pull mistral:7b || log_warning "Failed to pull mistral:7b"
-    docker exec homei_ollama ollama pull tinyllama || log_warning "Failed to pull tinyllama"
+    docker exec homie_ollama ollama pull llama2:7b || log_warning "Failed to pull llama2:7b"
+    docker exec homie_ollama ollama pull mistral:7b || log_warning "Failed to pull mistral:7b"
+    docker exec homie_ollama ollama pull tinyllama || log_warning "Failed to pull tinyllama"
     
     log_success "AI models pulled successfully"
 }
 
-# Deploy the homei_ai stack
+# Deploy the homie_ai stack
 deploy_ai_stack() {
-    log_info "Deploying homei_ai stack..."
+    log_info "Deploying homie_ai stack..."
     
     # Create necessary directories
     mkdir -p data/ai data/ollama data/open_webui
     
     # Deploy the stack
     if docker compose up -d; then
-        log_success "homei_ai stack deployed successfully"
+        log_success "homie_ai stack deployed successfully"
     else
-        log_error "Failed to deploy homei_ai stack"
+        log_error "Failed to deploy homie_ai stack"
         exit 1
     fi
 }
@@ -124,7 +124,7 @@ show_status() {
 
 # Main deployment function
 main() {
-    log_info "Starting homei_ai stack deployment..."
+    log_info "Starting homie_ai stack deployment..."
     echo ""
     
     cd "$PROJECT_ROOT"
@@ -149,12 +149,12 @@ main() {
 # Handle script arguments
 case "${1:-}" in
     "stop")
-        log_info "Stopping homei_ai stack..."
+        log_info "Stopping homie_ai stack..."
         docker compose down
         log_success "Stack stopped"
         ;;
     "restart")
-        log_info "Restarting homei_ai stack..."
+        log_info "Restarting homie_ai stack..."
         docker compose down
         sleep 2
         main

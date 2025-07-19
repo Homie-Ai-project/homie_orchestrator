@@ -1,6 +1,6 @@
 # Installation Guide - Jetson Nano with RAUC
 
-This guide covers the complete installation of Homei Orchestrator on a Jetson Nano device with RAUC (Robust Auto-Update Client) for A/B system updates.
+This guide covers the complete installation of Homie Orchestrator on a Jetson Nano device with RAUC (Robust Auto-Update Client) for A/B system updates.
 
 ## Prerequisites
 
@@ -89,7 +89,7 @@ sudo mkdir -p /etc/rauc
 # Create system.conf
 sudo tee /etc/rauc/system.conf << 'EOF'
 [system]
-compatible=jetson-nano-homei
+compatible=jetson-nano-homie
 bootloader=uboot
 
 [keyring]
@@ -107,7 +107,7 @@ bootname=B
 EOF
 
 # Generate RAUC certificates (for development)
-openssl req -x509 -newkey rsa:4096 -nodes -keyout /tmp/private-key.pem -out /tmp/ca.cert.pem -days 7300 -subj "/CN=Homei Development CA"
+openssl req -x509 -newkey rsa:4096 -nodes -keyout /tmp/private-key.pem -out /tmp/ca.cert.pem -days 7300 -subj "/CN=Homie Development CA"
 sudo cp /tmp/ca.cert.pem /etc/rauc/
 ```
 
@@ -142,17 +142,17 @@ echo "/dev/mmcblk0p3 /data ext4 defaults 0 2" | sudo tee -a /etc/fstab
 sudo mount -a
 ```
 
-## Step 5: Install Homei Orchestrator
+## Step 5: Install Homie Orchestrator
 
 ### 5.1 Clone Repository
 ```bash
 # Clone the orchestrator repository
 cd /opt
-sudo git clone https://github.com/your-org/homei_orchestrator.git
-cd homei_orchestrator
+sudo git clone https://github.com/your-org/homie_orchestrator.git
+cd homie_orchestrator
 
 # Set permissions
-sudo chown -R $USER:$USER /opt/homei_orchestrator
+sudo chown -R $USER:$USER /opt/homie_orchestrator
 ```
 
 ### 5.2 Create Directory Structure
@@ -163,7 +163,7 @@ sudo mkdir -p /config/core
 sudo chown -R $USER:$USER /data /config
 
 # Create Docker network
-docker network create homei_network || true
+docker network create homie_network || true
 ```
 
 ### 5.3 Configure Environment
@@ -179,9 +179,9 @@ echo "export ORCHESTRATOR_SECRET_KEY=$ORCHESTRATOR_SECRET_KEY" >> ~/.bashrc
 cat > .env << EOF
 ORCHESTRATOR_SECRET_KEY=$ORCHESTRATOR_SECRET_KEY
 ORCHESTRATOR_CONFIG=/config/orchestrator.yaml
-POSTGRES_DB=homei
-POSTGRES_USER=homei
-POSTGRES_PASSWORD=homei_password
+POSTGRES_DB=homie
+POSTGRES_USER=homie
+POSTGRES_PASSWORD=homie_password
 PYTHONPATH=/app
 EOF
 ```
@@ -229,39 +229,39 @@ curl -X GET http://localhost:8080/api/v1/containers
 ### 7.1 Create Systemd Service
 ```bash
 # Create systemd service for auto-start
-sudo tee /etc/systemd/system/homei-orchestrator.service << 'EOF'
+sudo tee /etc/systemd/system/homie-orchestrator.service << 'EOF'
 [Unit]
-Description=Homei Orchestrator
+Description=Homie Orchestrator
 Requires=docker.service
 After=docker.service
 
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-WorkingDirectory=/opt/homei_orchestrator
+WorkingDirectory=/opt/homie_orchestrator
 ExecStart=/usr/local/bin/docker-compose up -d
 ExecStop=/usr/local/bin/docker-compose down
 TimeoutStartSec=300
-User=homei
-Group=homei
+User=homie
+Group=homie
 
 [Install]
 WantedBy=multi-user.target
 EOF
 
-# Create homei user if it doesn't exist
-sudo useradd -r -s /bin/false homei || true
-sudo usermod -aG docker homei
+# Create homie user if it doesn't exist
+sudo useradd -r -s /bin/false homie || true
+sudo usermod -aG docker homie
 
 # Set ownership
-sudo chown -R homei:homei /opt/homei_orchestrator /data /config
+sudo chown -R homie:homie /opt/homie_orchestrator /data /config
 
 # Enable and start service
-sudo systemctl enable homei-orchestrator.service
-sudo systemctl start homei-orchestrator.service
+sudo systemctl enable homie-orchestrator.service
+sudo systemctl start homie-orchestrator.service
 
 # Check status
-sudo systemctl status homei-orchestrator.service
+sudo systemctl status homie-orchestrator.service
 ```
 
 ## Step 8: Configure Firewall (Optional)
@@ -275,11 +275,11 @@ sudo apt install -y ufw
 sudo ufw allow ssh
 
 # Allow orchestrator ports
-sudo ufw allow 8080/tcp comment 'Homei Orchestrator API'
-sudo ufw allow 9090/tcp comment 'Homei Orchestrator Metrics'
+sudo ufw allow 8080/tcp comment 'Homie Orchestrator API'
+sudo ufw allow 9090/tcp comment 'Homie Orchestrator Metrics'
 
 # Allow core service port
-sudo ufw allow 8123/tcp comment 'Homei Core Service'
+sudo ufw allow 8123/tcp comment 'Homie Core Service'
 
 # Enable firewall
 sudo ufw --force enable
@@ -297,14 +297,14 @@ sudo mkdir -p /opt/rauc-bundles
 
 cat > /opt/rauc-bundles/bundle.conf << 'EOF'
 [update]
-compatible=jetson-nano-homei
+compatible=jetson-nano-homie
 version=1.0.0
 
 [bundle]
 format=verity
 
 [image.rootfs]
-filename=homei-orchestrator.ext4
+filename=homie-orchestrator.ext4
 
 [hooks]
 filename=update-hook.sh
@@ -320,7 +320,7 @@ cat > /opt/rauc-bundles/update-hook.sh << 'EOF'
 case "$1" in
     slot-post-install)
         # Update orchestrator after slot installation
-        cd /opt/homei_orchestrator
+        cd /opt/homie_orchestrator
         docker-compose pull
         docker-compose up -d
         ;;
@@ -335,7 +335,7 @@ chmod +x /opt/rauc-bundles/update-hook.sh
 ### 10.1 Log Management
 ```bash
 # Configure log rotation
-sudo tee /etc/logrotate.d/homei-orchestrator << 'EOF'
+sudo tee /etc/logrotate.d/homie-orchestrator << 'EOF'
 /data/logs/*.log {
     daily
     missingok
@@ -375,7 +375,7 @@ ls -la /data/backups/
 3. **Database connection issues**:
    ```bash
    docker-compose logs postgres
-   docker exec -it postgres psql -U homei -d homei
+   docker exec -it postgres psql -U homie -d homie
    ```
 
 4. **RAUC installation fails**:
@@ -388,7 +388,7 @@ ls -la /data/backups/
 - **Orchestrator logs**: `docker-compose logs orchestrator`
 - **System logs**: `/var/log/syslog`
 - **Docker logs**: `journalctl -u docker`
-- **Service logs**: `journalctl -u homei-orchestrator`
+- **Service logs**: `journalctl -u homie-orchestrator`
 
 ## Next Steps
 

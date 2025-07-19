@@ -36,7 +36,7 @@ class ContainerStatus:
 class ContainerManager:
     """Manages Docker containers for the orchestrator"""
     
-    def __init__(self, docker_socket: str = "/var/run/docker.sock", network_name: str = "homei_network"):
+    def __init__(self, docker_socket: str = "/var/run/docker.sock", network_name: str = "homie_network"):
         self.docker_socket = docker_socket
         self.network_name = network_name
         self.client: Optional[docker.DockerClient] = None
@@ -73,7 +73,7 @@ class ContainerManager:
             self.network = self.client.networks.create(
                 name=self.network_name,
                 driver="bridge",
-                labels={"io.homei.orchestrator": "true"}
+                labels={"io.homie.orchestrator": "true"}
             )
             logger.info(f"Created network: {self.network_name}")
     
@@ -82,11 +82,11 @@ class ContainerManager:
         try:
             containers = self.client.containers.list(
                 all=True,
-                filters={"label": "io.homei.managed=true"}
+                filters={"label": "io.homie.managed=true"}
             )
             
             for container in containers:
-                service_name = container.labels.get("io.homei.service")
+                service_name = container.labels.get("io.homie.service")
                 if service_name:
                     self._containers[service_name] = container
                     logger.info(f"Discovered managed container: {service_name}")
@@ -287,12 +287,12 @@ class ContainerManager:
         """Prepare container configuration for Docker API"""
         container_config = {
             "image": config.image,
-            "name": f"homei_{service_name}",
+            "name": f"homie_{service_name}",
             "detach": True,
             "restart_policy": {"Name": config.restart_policy},
             "labels": {
-                "io.homei.managed": "true",
-                "io.homei.service": service_name,
+                "io.homie.managed": "true",
+                "io.homie.service": service_name,
                 **config.labels
             }
         }

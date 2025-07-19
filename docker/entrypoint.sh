@@ -2,7 +2,7 @@
 set -e
 
 # Initialize orchestrator
-echo "Starting Homei Orchestrator..."
+echo "Starting Homie Orchestrator..."
 
 # Check if Docker socket is available
 if [ ! -S /var/run/docker.sock ]; then

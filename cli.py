@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Homei Orchestrator CLI
+Homie Orchestrator CLI
 
 Command-line interface for managing the orchestrator.
 """
@@ -21,14 +21,14 @@ sys.path.insert(0, str(Path(__file__).parent / "src"))
 from orchestrator.config import get_settings
 from orchestrator.core.container_manager import ContainerManager
 
-app = typer.Typer(name="orchestrator", help="Homei Orchestrator CLI")
+app = typer.Typer(name="orchestrator", help="Homie Orchestrator CLI")
 console = Console()
 
 
 @app.command()
 def status():
     """Show orchestrator status"""
-    console.print("[bold green]Homei Orchestrator Status[/bold green]")
+    console.print("[bold green]Homie Orchestrator Status[/bold green]")
     
     # Show configuration
     settings = get_settings()

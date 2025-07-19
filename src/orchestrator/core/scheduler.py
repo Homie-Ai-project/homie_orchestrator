@@ -1,5 +1,5 @@
 """
-Scheduler module for Homei Orchestrator
+Scheduler module for Homie Orchestrator
 
 Handles scheduled tasks like backups, health checks, and maintenance.
 """

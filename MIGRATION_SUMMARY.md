@@ -1,7 +1,7 @@
-# Homei Orchestrator - Migration Summary
+# Homie Orchestrator - Migration Summary
 
 ## Overview
-The Homei Orchestrator has been successfully updated to focus on AI workloads and specifically orchestrate the `homei_ai` container instead of Home Assistant. The system now positions itself as a **self-hosted, private, secure, and unlimited AI platform orchestrator**.
+The Homie Orchestrator has been successfully updated to focus on AI workloads and specifically orchestrate the `homie_ai` container instead of Home Assistant. The system now positions itself as a **self-hosted, private, secure, and unlimited AI platform orchestrator**.
 
 ## Key Changes Made
 
@@ -9,19 +9,19 @@ The Homei Orchestrator has been successfully updated to focus on AI workloads an
 
 #### Main README.md
 - **Updated tagline**: Changed from "smart home infrastructure" to "AI-powered infrastructure"
-- **Removed Home Assistant references**: Replaced with homei_ai focus
+- **Removed Home Assistant references**: Replaced with homie_ai focus
 - **Updated use cases**: Now targets AI enthusiasts, home lab AI deployments
 - **New examples**: Replaced Home Assistant deployment examples with AI stack examples
 - **Updated features**: Emphasized private, secure, unlimited local AI usage
 
 #### docs/README.md
 - Updated description to focus on AI workloads
-- Added homei_ai specific features
+- Added homie_ai specific features
 - Emphasized privacy, security, and local AI processing
 
 #### docs/quick-start.md
 - Replaced Smart Home examples with AI Platform examples
-- Updated service templates to show homei_ai, Ollama, and AI services
+- Updated service templates to show homie_ai, Ollama, and AI services
 - Modified deployment examples for AI-first use cases
 
 #### docs/architecture.md
@@ -36,13 +36,13 @@ The Homei Orchestrator has been successfully updated to focus on AI workloads an
 ### 2. Configuration Updates
 
 #### config/orchestrator.yaml.template
-- Replaced `homei_core` service with `homei_ai` service
+- Replaced `homie_core` service with `homie_ai` service
 - Added `ollama` service configuration with GPU support
 - Updated ports and environment variables for AI services
 - Added GPU device reservations for NVIDIA GPUs
 
 #### docker-compose.yml
-- Replaced `homei_core` service with `homei_ai` service
+- Replaced `homie_core` service with `homie_ai` service
 - Added `ollama` service with GPU support
 - Updated ports: 8080 (Open WebUI), 3000 (React Chat), 11434 (Ollama API)
 - Added GPU device reservations
@@ -59,8 +59,8 @@ The Homei Orchestrator has been successfully updated to focus on AI workloads an
 
 ### 4. New Configuration Files
 
-#### config/services/homei_ai_stack.yaml
-- **New file**: Complete configuration for homei_ai stack
+#### config/services/homie_ai_stack.yaml
+- **New file**: Complete configuration for homie_ai stack
 - Defines Ollama, Open WebUI, and React Chat services
 - Includes health checks, backup configuration, and monitoring
 - GPU support and resource reservations
@@ -69,7 +69,7 @@ The Homei Orchestrator has been successfully updated to focus on AI workloads an
 ### 5. New Deployment Scripts
 
 #### scripts/deploy-ai-stack.sh
-- **New executable script**: Automated deployment of homei_ai stack
+- **New executable script**: Automated deployment of homie_ai stack
 - Handles prerequisites checking
 - Automated AI model pulling (llama2:7b, mistral:7b, tinyllama)
 - Service status monitoring
@@ -80,9 +80,9 @@ The Homei Orchestrator has been successfully updated to focus on AI workloads an
 #### Makefile
 - Updated description to "AI-First Container Management System"
 - Added new AI-specific targets:
-  - `ai-deploy`: Deploy the homei_ai stack
-  - `ai-stop`: Stop the homei_ai stack  
-  - `ai-status`: Show homei_ai stack status
+  - `ai-deploy`: Deploy the homie_ai stack
+  - `ai-stop`: Stop the homie_ai stack  
+  - `ai-status`: Show homie_ai stack status
 - Updated setup to create AI-related directories
 
 ## Service Architecture
@@ -91,7 +91,7 @@ The orchestrator now manages this AI stack:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                    Homei Orchestrator                      │
+│                    Homie Orchestrator                      │
 │                  (Management Layer)                        │
 └─────────────────────┬───────────────────────────────────────┘
                       │
@@ -99,7 +99,7 @@ The orchestrator now manages this AI stack:
               │               │
               ▼               ▼
     ┌─────────────────┐  ┌─────────────────┐
-    │   homei_ai      │  │     ollama      │
+    │   homie_ai      │  │     ollama      │
     │                 │  │                 │
     │ • Open WebUI    │  │ • LLM Engine    │
     │ • React Chat    │  │ • GPU Support   │
@@ -151,4 +151,4 @@ make logs        # View orchestrator logs
 4. **Backup validation**: Test backup and restore procedures for AI data
 5. **Monitoring setup**: Configure alerts for GPU utilization and AI service health
 
-The Homei Orchestrator is now fully focused on providing enterprise-grade orchestration for self-hosted AI workloads, with homei_ai as the primary application layer.
+The Homie Orchestrator is now fully focused on providing enterprise-grade orchestration for self-hosted AI workloads, with homie_ai as the primary application layer.

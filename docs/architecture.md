@@ -1,10 +1,10 @@
-# 🏗️ Homei Orchestrator Architecture
+# 🏗️ Homie Orchestrator Architecture
 
 > **A deep dive into the engineering marvel that makes your home lab infrastructure bulletproof.**
 
 ## 🧠 Design Philosophy
 
-Homei Orchestrator is built on three core principles that make it fundamentally different from other orchestration platforms:
+Homie Orchestrator is built on three core principles that make it fundamentally different from other orchestration platforms:
 
 ### 🎮 **Consumer-Grade Simplicity**
 - **Zero-configuration defaults** - Works out of the box
@@ -407,7 +407,7 @@ services:
     networks:
       - web_tier
     labels:
-      io.homei.expose: "80"
+      io.homie.expose: "80"
       
   backend:
     image: "myapp:latest"
@@ -474,19 +474,19 @@ from prometheus_client import Counter, Histogram, Gauge
 
 # Container metrics
 container_starts = Counter(
-    'homei_container_starts_total',
+    'homie_container_starts_total',
     'Total container starts',
     ['service_name', 'image']
 )
 
 container_response_time = Histogram(
-    'homei_container_response_seconds',
+    'homie_container_response_seconds',
     'Container response times',
     ['service_name', 'endpoint']
 )
 
 resource_usage = Gauge(
-    'homei_resource_usage_percent',
+    'homie_resource_usage_percent',
     'Resource usage percentage', 
     ['resource_type', 'container_id']
 )

@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.orchestrator
-    container_name: homei_orchestrator
+    container_name: homie_orchestrator
     restart: unless-stopped
     privileged: true
     volumes:
@@ -22,15 +22,15 @@ services:
     ports:
       - "8080:8080"  # Orchestrator API
     networks:
-      - homei_network
+      - homie_network
     labels:
-      - "io.homei.orchestrator=true"
-      - "io.homei.role=supervisor"
+      - "io.homie.orchestrator=true"
+      - "io.homie.role=supervisor"
 
   # Managed AI service - this would be managed by the orchestrator
-  homei_ai:
-    image: homei/ai:latest
-    container_name: homei_ai
+  homie_ai:
+    image: homie/ai:latest
+    container_name: homie_ai
     restart: unless-stopped
     depends_on:
       - orchestrator
@@ -44,15 +44,15 @@ services:
       - "8080:8080"  # Open WebUI
       - "3000:3000"  # React Chat Interface
     networks:
-      - homei_network
+      - homie_network
     labels:
-      - "io.homei.managed=true"
-      - "io.homei.service=ai"
+      - "io.homie.managed=true"
+      - "io.homie.service=ai"
 
   # Ollama AI service managed by orchestrator
   ollama:
     image: ollama/ollama:latest
-    container_name: homei_ollama
+    container_name: homie_ollama
     restart: unless-stopped
     depends_on:
       - orchestrator
@@ -63,10 +63,10 @@ services:
     ports:
       - "11434:11434"
     networks:
-      - homei_network
+      - homie_network
     labels:
-      - "io.homei.managed=true"
-      - "io.homei.service=ollama"
+      - "io.homie.managed=true"
+      - "io.homie.service=ollama"
     deploy:
       resources:
         reservations:
@@ -78,37 +78,37 @@ services:
   # Database service managed by orchestrator
   postgres:
     image: postgres:15
-    container_name: homei_postgres
+    container_name: homie_postgres
     restart: unless-stopped
     environment:
-      - POSTGRES_DB=homei
-      - POSTGRES_USER=homei
-      - POSTGRES_PASSWORD=homei_password
+      - POSTGRES_DB=homie
+      - POSTGRES_USER=homie
+      - POSTGRES_PASSWORD=homie_password
     volumes:
       - ./data/postgres:/var/lib/postgresql/data
     networks:
-      - homei_network
+      - homie_network
     labels:
-      - "io.homei.managed=true"
-      - "io.homei.service=database"
+      - "io.homie.managed=true"
+      - "io.homie.service=database"
 
   # Redis service for caching and pub/sub
   redis:
     image: redis:7-alpine
-    container_name: homei_redis
+    container_name: homie_redis
     restart: unless-stopped
     volumes:
       - ./data/redis:/data
     networks:
-      - homei_network
+      - homie_network
     labels:
-      - "io.homei.managed=true"
-      - "io.homei.service=cache"
+      - "io.homie.managed=true"
+      - "io.homie.service=cache"
 
 networks:
-  homei_network:
+  homie_network:
     driver: bridge
-    name: homei_network
+    name: homie_network
 
 volumes:
   orchestrator_data:

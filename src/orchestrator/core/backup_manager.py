@@ -1,5 +1,5 @@
 """
-Backup Manager for Homei Orchestrator
+Backup Manager for Homie Orchestrator
 
 Handles automated backups of container data and configurations.
 """

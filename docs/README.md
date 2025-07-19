@@ -1,6 +1,6 @@
-# Homei Orchestrator Documentation
+# Homie Orchestrator Documentation
 
-Welcome to the Homei Orchestrator documentation. This system provides container orchestration and management capabilities, specifically designed for AI workloads and self-hosted services with focus on privacy, security, and unlimited local AI usage.
+Welcome to the Homie Orchestrator documentation. This system provides container orchestration and management capabilities, specifically designed for AI workloads and self-hosted services with focus on privacy, security, and unlimited local AI usage.
 
 ## Table of Contents
 
@@ -16,17 +16,17 @@ Welcome to the Homei Orchestrator documentation. This system provides container 
 ## Quick Start
 
 1. **Prerequisites**: Docker and Docker Compose installed
-2. **Installation**: Run `curl -fsSL https://get.homei.io/install.sh | bash`
+2. **Installation**: Run `curl -fsSL https://get.homieos.com/install.sh | bash`
 3. **Access**: Visit `http://localhost:8080` for the dashboard
-4. **Deploy AI**: Use the built-in homei_ai stack template
+4. **Deploy AI**: Use the built-in homie_ai stack template
 5. **Enjoy**: Private, secure, unlimited local AI
 
 ## Architecture Overview
 
-The Homei Orchestrator consists of:
+The Homie Orchestrator consists of:
 
 - **API Server**: FastAPI-based REST API (port 8080)
-- **AI Services**: homei_ai stack with Ollama, Open WebUI, and React Chat
+- **AI Services**: homie_ai stack with Ollama, Open WebUI, and React Chat
 - **Container Manager**: Docker container lifecycle management
 - **Backup Manager**: Automated backup and restore functionality
 - **Health Monitor**: Service health monitoring and alerting

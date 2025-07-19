@@ -1,6 +1,6 @@
 # Configuration Guide
 
-This guide explains how to configure the Homei Orchestrator using the `orchestrator.yaml` configuration file.
+This guide explains how to configure the Homie Orchestrator using the `orchestrator.yaml` configuration file.
 
 ## Configuration File Location
 
@@ -30,7 +30,7 @@ export REDIS_PASSWORD="redis-password"
 
 ```yaml
 orchestrator:
-  name: "Homei Orchestrator"
+  name: "Homie Orchestrator"
   version: "1.0.0"
   timezone: "UTC"  # or "America/New_York", "Europe/London", etc.
 ```
@@ -62,7 +62,7 @@ security:
 ```yaml
 docker:
   socket_path: "/var/run/docker.sock"  # Docker socket
-  network_name: "homei_network"        # Docker network name
+  network_name: "homie_network"        # Docker network name
   registry:
     url: "docker.io"                   # Docker registry
     username: null                     # Registry username (optional)
@@ -82,7 +82,7 @@ storage:
 
 ```yaml
 database:
-  url: "postgresql+asyncpg://homei:homei_password@postgres:5432/homei"
+  url: "postgresql+asyncpg://homie:homie_password@postgres:5432/homie"
   pool_size: 10        # Connection pool size
   max_overflow: 20     # Maximum pool overflow
 ```
@@ -132,12 +132,12 @@ The orchestrator can manage Docker services defined in the configuration:
 
 ```yaml
 services:
-  homei_core:
-    image: "homei/core:latest"
+  homie_core:
+    image: "homie/core:latest"
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_URL: "postgresql://homei:homei_password@postgres:5432/homei"
+      POSTGRES_URL: "postgresql://homie:homie_password@postgres:5432/homie"
       REDIS_URL: "redis://redis:6379/0"
     ports:
       - "8123:8123"
@@ -148,8 +148,8 @@ services:
       - postgres
       - redis
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "core"
+      io.homie.managed: "true"
+      io.homie.service: "core"
 ```
 
 ### Database Service
@@ -161,14 +161,14 @@ services:
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_DB: "homei"
-      POSTGRES_USER: "homei"
-      POSTGRES_PASSWORD: "homei_password"
+      POSTGRES_DB: "homie"
+      POSTGRES_USER: "homie"
+      POSTGRES_PASSWORD: "homie_password"
     volumes:
       - "./data/postgres:/var/lib/postgresql/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "database"
+      io.homie.managed: "true"
+      io.homie.service: "database"
 ```
 
 ### Cache Service
@@ -182,8 +182,8 @@ services:
     volumes:
       - "./data/redis:/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "cache"
+      io.homie.managed: "true"
+      io.homie.service: "cache"
 ```
 
 ## Service Configuration Options
@@ -225,11 +225,11 @@ services:
     depends_on:
       - backend_service
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "webserver"
+      io.homie.managed: "true"
+      io.homie.service: "webserver"
       traefik.enable: "true"
     networks:
-      - homei_network
+      - homie_network
       - external_network
     command: ["nginx", "-g", "daemon off;"]
     healthcheck:
@@ -339,15 +339,15 @@ orchestrator:
   security:
     secret_key: "${ORCHESTRATOR_SECRET_KEY}"
   database:
-    url: "postgresql+asyncpg://homei:password@postgres:5432/homei"
+    url: "postgresql+asyncpg://homie:password@postgres:5432/homie"
 
 services:
   postgres:
     image: "postgres:15"
     enabled: true
     environment:
-      POSTGRES_DB: "homei"
-      POSTGRES_USER: "homei"
+      POSTGRES_DB: "homie"
+      POSTGRES_USER: "homie"
       POSTGRES_PASSWORD: "password"
 ```
 
@@ -355,7 +355,7 @@ services:
 
 ```yaml
 orchestrator:
-  name: "Homei Production Orchestrator"
+  name: "Homie Production Orchestrator"
   version: "1.0.0"
   timezone: "UTC"
   
@@ -363,7 +363,7 @@ orchestrator:
     host: "0.0.0.0"
     port: 8080
     cors_origins:
-      - "https://homei.example.com"
+      - "https://homie.example.com"
   
   security:
     secret_key: "${ORCHESTRATOR_SECRET_KEY}"
@@ -371,7 +371,7 @@ orchestrator:
     refresh_token_expire_days: 7
   
   database:
-    url: "postgresql+asyncpg://homei:${POSTGRES_PASSWORD}@postgres:5432/homei"
+    url: "postgresql+asyncpg://homie:${POSTGRES_PASSWORD}@postgres:5432/homie"
     pool_size: 15
     max_overflow: 25
   
@@ -393,12 +393,12 @@ orchestrator:
     retention_days: 90
 
 services:
-  homei_core:
-    image: "homei/core:v1.0.0"
+  homie_core:
+    image: "homie/core:v1.0.0"
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_URL: "postgresql://homei:${POSTGRES_PASSWORD}@postgres:5432/homei"
+      POSTGRES_URL: "postgresql://homie:${POSTGRES_PASSWORD}@postgres:5432/homie"
       REDIS_URL: "redis://:${REDIS_PASSWORD}@redis:6379/0"
     ports:
       - "8123:8123"
@@ -408,22 +408,22 @@ services:
       - postgres
       - redis
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "core"
+      io.homie.managed: "true"
+      io.homie.service: "core"
 
   postgres:
     image: "postgres:15"
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_DB: "homei"
-      POSTGRES_USER: "homei"
+      POSTGRES_DB: "homie"
+      POSTGRES_USER: "homie"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
     volumes:
       - "/data/postgres:/var/lib/postgresql/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "database"
+      io.homie.managed: "true"
+      io.homie.service: "database"
 
   redis:
     image: "redis:7-alpine"
@@ -433,8 +433,8 @@ services:
     volumes:
       - "/data/redis:/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "cache"
+      io.homie.managed: "true"
+      io.homie.service: "cache"
 ```
 
 ## Troubleshooting Configuration

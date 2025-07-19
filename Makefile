@@ -1,10 +1,10 @@
-# Makefile for Homei Orchestrator
+# Makefile for Homie Orchestrator
 
 .PHONY: help build start stop restart logs clean setup dev ai-deploy ai-stop ai-status
 
 # Default target
 help:
-	@echo "Homei Orchestrator - AI-First Container Management System"
+	@echo "Homie Orchestrator - AI-First Container Management System"
 	@echo ""
 	@echo "Available commands:"
 	@echo "  setup      - Initial setup (create directories, networks)"
@@ -15,18 +15,18 @@ help:
 	@echo "  logs       - Show orchestrator logs"
 	@echo "  dev        - Start in development mode"
 	@echo "  clean      - Clean up containers and volumes"
-	@echo "  ai-deploy  - Deploy the homei_ai stack"
-	@echo "  ai-stop    - Stop the homei_ai stack"
-	@echo "  ai-status  - Show homei_ai stack status"
+	@echo "  ai-deploy  - Deploy the homie_ai stack"
+	@echo "  ai-stop    - Stop the homie_ai stack"
+	@echo "  ai-status  - Show homie_ai stack status"
 	@echo "  cli        - Run CLI commands (use ARGS='command')"
 
 # Setup directories and Docker network
 setup:
-	@echo "Setting up Homei Orchestrator..."
+	@echo "Setting up Homie Orchestrator..."
 	mkdir -p config data backups
 	mkdir -p data/postgres data/redis data/ai data/ollama data/open_webui
 	mkdir -p config/ai config/services
-	docker network create homei_network 2>/dev/null || true
+	docker network create homie_network 2>/dev/null || true
 	@echo "Setup complete!"
 
 # Build the orchestrator image
@@ -36,12 +36,12 @@ build:
 
 # Start all services
 start: setup
-	@echo "Starting Homei Orchestrator..."
+	@echo "Starting Homie Orchestrator..."
 	docker-compose up -d
 
 # Stop all services
 stop:
-	@echo "Stopping Homei Orchestrator..."
+	@echo "Stopping Homie Orchestrator..."
 	docker-compose down
 
 # Restart all services
@@ -49,17 +49,17 @@ restart: stop start
 
 # Deploy AI stack
 ai-deploy:
-	@echo "Deploying homei_ai stack..."
+	@echo "Deploying homie_ai stack..."
 	./scripts/deploy-ai-stack.sh
 
 # Stop AI stack
 ai-stop:
-	@echo "Stopping homei_ai stack..."
+	@echo "Stopping homie_ai stack..."
 	./scripts/deploy-ai-stack.sh stop
 
 # Show AI stack status
 ai-status:
-	@echo "homei_ai stack status:"
+	@echo "homie_ai stack status:"
 	./scripts/deploy-ai-stack.sh status
 
 # Show orchestrator logs
@@ -76,7 +76,7 @@ clean:
 	@echo "Cleaning up..."
 	docker-compose down -v
 	docker system prune -f
-	docker network rm homei_network 2>/dev/null || true
+	docker network rm homie_network 2>/dev/null || true
 
 # CLI commands
 cli:

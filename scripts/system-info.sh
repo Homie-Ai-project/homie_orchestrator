@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=== Homei Orchestrator System Information ==="
+echo "=== Homie Orchestrator System Information ==="
 
 # Colors for output
 BLUE='\033[0;34m'
@@ -86,9 +86,9 @@ print_section "Docker Networks"
 if docker network ls >/dev/null 2>&1; then
     docker network ls
     
-    if docker network ls | grep -q "homei_network"; then
-        echo -e "\nHomei network details:"
-        docker network inspect homei_network --format "{{json .IPAM.Config}}" 2>/dev/null
+    if docker network ls | grep -q "homie_network"; then
+        echo -e "\nHomie network details:"
+        docker network inspect homie_network --format "{{json .IPAM.Config}}" 2>/dev/null
     fi
 fi
 
@@ -136,7 +136,7 @@ print_section "Log Files"
 echo "Recent log entries:"
 if command -v journalctl >/dev/null 2>&1; then
     echo "System logs (last 5 entries):"
-    journalctl -u homei-orchestrator --no-pager -n 5 2>/dev/null || echo "  No systemd service logs found"
+    journalctl -u homie-orchestrator --no-pager -n 5 2>/dev/null || echo "  No systemd service logs found"
 fi
 
 echo -e "\nDocker logs (last 5 entries):"
@@ -152,7 +152,7 @@ echo "  Docker group: $(getent group docker 2>/dev/null | cut -d: -f4)"
 
 echo -e "\nFile permissions:"
 ls -la /var/run/docker.sock 2>/dev/null
-ls -la /opt/homei_orchestrator 2>/dev/null | head -3
+ls -la /opt/homie_orchestrator 2>/dev/null | head -3
 
 print_section "RAUC Information"
 if command -v rauc >/dev/null 2>&1; then

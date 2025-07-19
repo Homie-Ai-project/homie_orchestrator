@@ -1,7 +1,7 @@
-# Homei Orchestrator Configuration
+# Homie Orchestrator Configuration
 orchestrator:
   # Basic configuration
-  name: "Homei Orchestrator"
+  name: "Homie Orchestrator"
   version: "1.0.0"
   timezone: "UTC"
   
@@ -21,7 +21,7 @@ orchestrator:
   # Docker Configuration
   docker:
     socket_path: "/var/run/docker.sock"
-    network_name: "homei_network"
+    network_name: "homie_network"
     registry:
       url: "docker.io"
       username: null
@@ -35,7 +35,7 @@ orchestrator:
     
   # Database Configuration
   database:
-    url: "postgresql+asyncpg://homei:homei_password@postgres:5432/homei"
+    url: "postgresql+asyncpg://homie:homie_password@postgres:5432/homie"
     pool_size: 10
     max_overflow: 20
     
@@ -63,12 +63,12 @@ orchestrator:
 # Managed Services Configuration
 services:
   # AI application service
-  homei_ai:
-    image: "homei/ai:latest"
+  homie_ai:
+    image: "homie/ai:latest"
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_URL: "postgresql://homei:homei_password@postgres:5432/homei"
+      POSTGRES_URL: "postgresql://homie:homie_password@postgres:5432/homie"
       REDIS_URL: "redis://redis:6379/0"
       OLLAMA_BASE_URL: "http://ollama:11434"
     ports:
@@ -82,8 +82,8 @@ services:
       - redis
       - ollama
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "ai"
+      io.homie.managed: "true"
+      io.homie.service: "ai"
 
   # Ollama AI service
   ollama:
@@ -97,8 +97,8 @@ services:
     volumes:
       - "./data/ollama:/root/.ollama"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "ollama"
+      io.homie.managed: "true"
+      io.homie.service: "ollama"
     deploy:
       resources:
         reservations:
@@ -113,14 +113,14 @@ services:
     enabled: true
     restart_policy: "unless-stopped"
     environment:
-      POSTGRES_DB: "homei"
-      POSTGRES_USER: "homei"
-      POSTGRES_PASSWORD: "homei_password"
+      POSTGRES_DB: "homie"
+      POSTGRES_USER: "homie"
+      POSTGRES_PASSWORD: "homie_password"
     volumes:
       - "./data/postgres:/var/lib/postgresql/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "database"
+      io.homie.managed: "true"
+      io.homie.service: "database"
       
   # Cache service
   redis:
@@ -130,5 +130,5 @@ services:
     volumes:
       - "./data/redis:/data"
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "cache"
+      io.homie.managed: "true"
+      io.homie.service: "cache"

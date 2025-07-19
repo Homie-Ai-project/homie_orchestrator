@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Homei Orchestrator Installation Script for Jetson Nano
+# Homie Orchestrator Installation Script for Jetson Nano
 # This script automates the installation process
 
 set -e  # Exit on any error
@@ -13,11 +13,11 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-ORCHESTRATOR_DIR="/opt/homei_orchestrator"
+ORCHESTRATOR_DIR="/opt/homie_orchestrator"
 DATA_DIR="/data"
 CONFIG_DIR="/config"
 BACKUP_DIR="/backups"
-SERVICE_USER="homei"
+SERVICE_USER="homie"
 
 # Functions
 log() {
@@ -123,7 +123,7 @@ install_rauc() {
 create_user() {
     log "Creating service user..."
     
-    # Create homei user if it doesn't exist
+    # Create homie user if it doesn't exist
     if ! id "$SERVICE_USER" &>/dev/null; then
         useradd -r -s /bin/bash -m "$SERVICE_USER"
         usermod -aG docker "$SERVICE_USER"
@@ -149,7 +149,7 @@ create_directories() {
 }
 
 install_orchestrator() {
-    log "Installing Homei Orchestrator..."
+    log "Installing Homie Orchestrator..."
     
     # Clone or copy orchestrator code
     if [ -d "$ORCHESTRATOR_DIR" ]; then
@@ -188,8 +188,8 @@ configure_orchestrator() {
     cat > "$ORCHESTRATOR_DIR/.env" << EOF
 ORCHESTRATOR_SECRET_KEY=$SECRET_KEY
 ORCHESTRATOR_CONFIG=$CONFIG_DIR/orchestrator.yaml
-POSTGRES_DB=homei
-POSTGRES_USER=homei
+POSTGRES_DB=homie
+POSTGRES_USER=homie
 POSTGRES_PASSWORD=$(openssl rand -hex 16)
 PYTHONPATH=$ORCHESTRATOR_DIR
 EOF
@@ -206,7 +206,7 @@ setup_docker_network() {
     log "Setting up Docker network..."
     
     # Create Docker network
-    docker network create homei_network 2>/dev/null || true
+    docker network create homie_network 2>/dev/null || true
     
     success "Docker network configured"
 }
@@ -214,9 +214,9 @@ setup_docker_network() {
 create_systemd_service() {
     log "Creating systemd service..."
     
-    cat > /etc/systemd/system/homei-orchestrator.service << EOF
+    cat > /etc/systemd/system/homie-orchestrator.service << EOF
 [Unit]
-Description=Homei Orchestrator
+Description=Homie Orchestrator
 Requires=docker.service
 After=docker.service
 
@@ -237,7 +237,7 @@ EOF
     
     # Enable service
     systemctl daemon-reload
-    systemctl enable homei-orchestrator.service
+    systemctl enable homie-orchestrator.service
     
     success "Systemd service created and enabled"
 }
@@ -250,9 +250,9 @@ setup_firewall() {
         ufw allow ssh
         
         # Allow orchestrator ports
-        ufw allow 8080/tcp comment 'Homei Orchestrator API'
-        ufw allow 9090/tcp comment 'Homei Orchestrator Metrics'
-        ufw allow 8123/tcp comment 'Homei Core Service'
+        ufw allow 8080/tcp comment 'Homie Orchestrator API'
+        ufw allow 9090/tcp comment 'Homie Orchestrator Metrics'
+        ufw allow 8123/tcp comment 'Homie Core Service'
         
         # Enable firewall if not already enabled
         ufw --force enable
@@ -317,7 +317,7 @@ verify_installation() {
 print_summary() {
     echo
     echo "================================================================"
-    echo -e "${GREEN}Homei Orchestrator Installation Complete!${NC}"
+    echo -e "${GREEN}Homie Orchestrator Installation Complete!${NC}"
     echo "================================================================"
     echo
     echo "Services:"
@@ -333,9 +333,9 @@ print_summary() {
     echo "  Backups:       $BACKUP_DIR"
     echo
     echo "Management Commands:"
-    echo "  Start:         sudo systemctl start homei-orchestrator"
-    echo "  Stop:          sudo systemctl stop homei-orchestrator"
-    echo "  Status:        sudo systemctl status homei-orchestrator"
+    echo "  Start:         sudo systemctl start homie-orchestrator"
+    echo "  Stop:          sudo systemctl stop homie-orchestrator"
+    echo "  Status:        sudo systemctl status homie-orchestrator"
     echo "  Logs:          cd $ORCHESTRATOR_DIR && docker-compose logs -f"
     echo "  Health Check:  $ORCHESTRATOR_DIR/scripts/health-check.sh"
     echo
@@ -357,7 +357,7 @@ print_summary() {
 # Main installation process
 main() {
     echo "================================================================"
-    echo "Homei Orchestrator Installation Script"
+    echo "Homie Orchestrator Installation Script"
     echo "================================================================"
     echo
     

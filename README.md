@@ -1,10 +1,14 @@
-# 🚀 Homei Orchestrator
+# 🚀 Homie Orchestrator
 
-> **Transform your home into a production-grade AI powerhouse with zero DevOps complexity!**
+> **Transform your home into a production-grade AI powerhouse with zero ```bash
+curl -fsSL https://get.homieos.com/install.sh | bash
+```
 
-The Homei Orchestrator is the **missing piece** between simple Docker containers and complex Kubernetes clusters. Inspired by enterprise-grade supervisor architectures, it brings production-level container orchestration to your home AI infrastructure, edge devices, and self-hosted AI APIs with the simplicity you've been craving.
+- 📧 **Email:** hello@homieos.comOps complexity!**
 
-## 🎯 Why Homei Orchestrator?
+The Homie Orchestrator is the **missing piece** between simple Docker containers and complex Kubernetes clusters. Inspired by enterprise-grade supervisor architectures, it brings production-level container orchestration to your home AI infrastructure, edge devices, and self-hosted AI APIs with the simplicity you've been craving.
+
+## 🎯 Why Homie Orchestrator?
 
 **Stop wrestling with Docker Compose files and manual container management!** 
 
@@ -16,7 +20,7 @@ The Homei Orchestrator is the **missing piece** between simple Docker containers
 🎮 **Simple as a game console** - Web UI so intuitive, your family can manage it  
 
 **Perfect for:**
-- 🤖 **AI Enthusiasts** - Run homei_ai, Ollama, and other AI services privately and securely
+- 🤖 **AI Enthusiasts** - Run homie_ai, Ollama, and other AI services privately and securely
 - 🧠 **AI Self-Hosters** - Deploy your own ChatGPT alternatives, LLMs, and AI APIs at home  
 - 🌐 **Edge AI Computing** - Jetson Nano, Raspberry Pi, and industrial AI deployments
 - 👨‍💻 **AI Developers** - Local AI development environments that mirror production
@@ -59,7 +63,7 @@ Built on battle-tested principles from the world's most reliable systems:
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   🎮 Web UI     │    │  📱 Mobile App  │    │  🤖 CLI Tool    │
+│   🎮 Web UI     │   │  📱 Mobile App  │    │  🤖 CLI Tool    │
 └─────────┬───────┘    └─────────┬───────┘    └─────────┬───────┘
           │                      │                      │
           └──────────────────────┼──────────────────────┘
@@ -73,7 +77,7 @@ Built on battle-tested principles from the world's most reliable systems:
         │                         │                         │
         ▼                         ▼                         ▼
 ┌───────────────┐        ┌───────────────┐        ┌───────────────┐
-│ 🐳 Container  │        │ 🏥 Health     │        │ 💾 Backup     │
+│ 🐳 Container  │        │ 🏥 Health    │        │ 💾 Backup     │
 │   Manager     │        │   Monitor     │        │   Manager     │
 └───────────────┘        └───────────────┘        └───────────────┘
         │                         │                         │
@@ -96,7 +100,7 @@ Built on battle-tested principles from the world's most reliable systems:
 ### 🐳 **The Magic One-Liner** (Recommended)
 
 ```bash
-curl -fsSL https://get.homei.io/install.sh | bash
+curl -fsSL https://get.homieos.com/install.sh | bash
 ```
 
 **That's it!** The installer will:
@@ -110,8 +114,8 @@ curl -fsSL https://get.homei.io/install.sh | bash
 
 **Step 1:** Clone the future
 ```bash
-git clone https://github.com/homei/orchestrator.git
-cd homei_orchestrator
+git clone https://github.com/homie/orchestrator.git
+cd homie_orchestrator
 ```
 
 **Step 2:** Launch mission control  
@@ -143,13 +147,13 @@ services:
     volumes:
       - "./data/minecraft:/data"
     labels:
-      io.homei.backup: "true"  # 💾 Automatic backups!
-      io.homei.monitor: "true" # 🏥 Health monitoring!
+      io.homie.backup: "true"  # 💾 Automatic backups!
+      io.homie.monitor: "true" # 🏥 Health monitoring!
 ```
 
 Deploy it:
 ```bash
-homei deploy services/minecraft.yaml
+homie deploy services/minecraft.yaml
 # Watch the magic happen in real-time! ✨
 ```
 
@@ -159,17 +163,17 @@ homei deploy services/minecraft.yaml
 ```yaml
 # One file to rule them all!
 services:
-  homei_ai:
-    image: "homei/ai:latest"
+  homie_ai:
+    image: "homie/ai:latest"
     ports: 
       - "8080:8080"  # Open WebUI
       - "3000:3000"  # React Chat Interface
       - "11434:11434"  # Ollama API
     volumes:
-      - "./data/homei_ai:/data"
+      - "./data/homie_ai:/data"
     labels:
-      io.homei.category: "ai"
-      io.homei.backup: "daily"
+      io.homie.category: "ai"
+      io.homie.backup: "daily"
 
   ollama:
     image: "ollama/ollama:latest"
@@ -192,7 +196,7 @@ services:
 
 **Deploy with one command:**
 ```bash
-homei stack deploy ai-platform
+homie stack deploy ai-platform
 # 🎉 Your entire AI infrastructure is live!
 ```
 
@@ -206,12 +210,12 @@ services:
       POSTGRES_USER: "dev"
       POSTGRES_PASSWORD: "dev123"
     labels:
-      io.homei.dev: "true"  # 🔥 Hot reload database
+      io.homie.dev: "true"  # 🔥 Hot reload database
 
   redis:
     image: "redis:7-alpine"
     labels:
-      io.homei.dev: "true"
+      io.homie.dev: "true"
 
   ai_api:
     image: "ai_api:dev"
@@ -222,8 +226,8 @@ services:
       REDIS_URL: "redis://redis:6379"
     depends_on: ["postgres", "redis"]
     labels:
-      io.homei.dev: "true"
-      io.homei.hot-reload: "true"  # 🚀 Auto-restart on changes
+      io.homie.dev: "true"
+      io.homie.hot-reload: "true"  # 🚀 Auto-restart on changes
 ```
 
 ### 🌐 **Edge AI Computing Beast Mode**
@@ -236,8 +240,8 @@ services:
     volumes:
       - "./models:/models"
     labels:
-      io.homei.gpu: "required"
-      io.homei.priority: "high"
+      io.homie.gpu: "required"
+      io.homie.priority: "high"
 
   ai-metrics-collector:
     image: "telegraf:latest"
@@ -246,7 +250,7 @@ services:
       - "/proc:/host/proc:ro"
       - "/sys:/host/sys:ro"
     labels:
-      io.homei.monitoring: "system"
+      io.homie.monitoring: "system"
 
   ai-dashboard:
     image: "grafana/grafana:latest"
@@ -255,9 +259,9 @@ services:
     depends_on: ["ai-metrics-collector"]
 ```
 
-## 🛡️ Why Homei Orchestrator vs. The Competition?
+## 🛡️ Why Homie Orchestrator vs. The Competition?
 
-| Feature | Homei Orchestrator | Docker Compose | Kubernetes | Portainer |
+| Feature | Homie Orchestrator | Docker Compose | Kubernetes | Portainer |
 |---------|-------------------|----------------|------------|-----------|
 | **Setup Time** | ⚡ 30 seconds | 🐌 5 minutes | 😱 2+ hours | 🚀 2 minutes |
 | **Learning Curve** | 🎮 Game-like | 📚 Moderate | 🧗‍♂️ Steep cliff | 🎯 Easy |
@@ -267,7 +271,7 @@ services:
 | **Edge AI Devices** | ✅ Optimized | ⚡ Good | ❌ Overkill | 🔧 OK |
 | **Family-Friendly** | 🎮 Yes! | 👨‍💻 Nerds only | 😱 PhD required | 🔧 Technical |
 
-**The Homei Difference:**
+**The Homie Difference:**
 - 🧠 **Smart by default** - No configuration bikeshedding
 - 🤖 **Purpose-built for home AI** - Not adapted from enterprise
 - 🚀 **Modern architecture** - Built with 2025 best practices
@@ -283,7 +287,7 @@ Available actions for containers:
 
 Example:
 ```bash
-curl -X POST http://localhost:8080/api/v1/containers/homei_core/action \
+curl -X POST http://localhost:8080/api/v1/containers/homie_core/action \
   -H "Content-Type: application/json" \
   -d '{"action": "restart", "timeout": 30}'
 ```
@@ -307,8 +311,8 @@ services:
     depends_on:
       - postgres
     labels:
-      io.homei.managed: "true"
-      io.homei.service: "my_service"
+      io.homie.managed: "true"
+      io.homie.service: "my_service"
 ```
 
 ## Backup and Restore
@@ -324,7 +328,7 @@ Backups are automatically created based on the configured schedule. They include
 # Via API
 POST /api/v1/backup
 {
-  "services": ["homei_core", "postgres"]  # Optional: specific services
+  "services": ["homie_core", "postgres"]  # Optional: specific services
 }
 ```
 
@@ -351,8 +355,8 @@ The orchestrator provides Prometheus-compatible metrics at `/metrics`:
 
 ### Project Structure
 ```
-homei_orchestrator/
-├── src/orchestrator/          # Main application code
+homie_orchestrator/
+├── src/orchestrator/         # Main application code
 │   ├── main.py               # Application entry point
 │   ├── config.py             # Configuration management
 │   ├── core/                 # Core components
@@ -371,7 +375,7 @@ homei_orchestrator/
 ├── docker-compose.yml        # Docker Compose configuration
 ├── Dockerfile.orchestrator   # Orchestrator container
 ├── requirements.txt          # Python dependencies
-└── cli.py                   # Command-line interface
+└── cli.py                    # Command-line interface
 ```
 
 ### Running in Development
@@ -417,7 +421,7 @@ MIT License - see LICENSE file for details.
 ### 🚀 **Special Launch Features**
 
 **🎁 Early Adopter Bonuses:**
-- **Free homei_ai integration tool** - Connect your self-hosted AI services in one click
+- **Free homie_ai integration tool** - Connect your self-hosted AI services in one click
 - **Premium AI templates library** - 50+ pre-built AI service configurations  
 - **Priority support** - Direct access to the core team
 - **Beta access** - Try new AI features before anyone else
@@ -444,18 +448,18 @@ MIT License - see LICENSE file for details.
 
 ```bash
 # Join thousands of happy AI self-hosters!
-curl -fsSL https://get.homei.io/install.sh | bash
+curl -fsSL https://get.homie.io/install.sh | bash
 ```
 
 **Questions? We're here to help!**
-- 📧 **Email:** hello@homei.io
-- 💬 **Discord:** [discord.gg/homei](https://discord.gg/homei)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/homei/orchestrator/issues)
-- 📖 **Docs:** [docs.homei.io](https://docs.homei.io)
+- 📧 **Email:** hello@homieos.com
+- 💬 **Discord:** [discord.gg/homieAi](https://discord.gg/homieAi)
+- 🐛 **Issues:** [GitHub Issues](https://github.com/HomieAiOS/homie_orchestrator/issues)
+- 📖 **Docs:** [docs.homieos.com](https://docs.homieos.com)
 
 ---
 
-### ⭐ **Love Homei Orchestrator?**
+### ⭐ **Love Homie Orchestrator?**
 
 - 🌟 **Star us on GitHub** - Help others discover the magic
 - 🐦 **Share on Twitter** - Spread the home AI revolution  
@@ -466,4 +470,4 @@ curl -fsSL https://get.homei.io/install.sh | bash
 
 ---
 
-*Homei Orchestrator - Because your home AI deserves enterprise-grade reliability with consumer-grade simplicity.*
+*Homie Orchestrator - Because your home AI deserves enterprise-grade reliability with consumer-grade simplicity.*

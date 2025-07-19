@@ -1,6 +1,6 @@
 # Development Guide
 
-This guide covers setting up a development environment for the Homei Orchestrator project.
+This guide covers setting up a development environment for the Homie Orchestrator project.
 
 ## Prerequisites
 
@@ -21,8 +21,8 @@ This guide covers setting up a development environment for the Homei Orchestrato
 ### 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-org/homei_orchestrator.git
-cd homei_orchestrator
+git clone https://github.com/your-org/homie_orchestrator.git
+cd homie_orchestrator
 ```
 
 ### 2. Create Virtual Environment
@@ -94,7 +94,7 @@ mkdocs-material==9.4.8
 ## Project Structure
 
 ```
-homei_orchestrator/
+homie_orchestrator/
 ├── src/orchestrator/           # Main application code
 │   ├── __init__.py
 │   ├── main.py                # Application entry point
@@ -179,7 +179,7 @@ Create `config/orchestrator.dev.yaml`:
 
 ```yaml
 orchestrator:
-  name: "Homei Orchestrator Dev"
+  name: "Homie Orchestrator Dev"
   version: "1.0.0-dev"
   
   api:
@@ -193,7 +193,7 @@ orchestrator:
     access_token_expire_minutes: 1440  # 24 hours for development
   
   database:
-    url: "postgresql+asyncpg://homei:homei_password@localhost:5432/homei"
+    url: "postgresql+asyncpg://homie:homie_password@localhost:5432/homie"
     
   redis:
     url: "redis://localhost:6379/0"

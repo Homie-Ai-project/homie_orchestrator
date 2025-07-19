@@ -1,6 +1,6 @@
 # RAUC Integration Guide
 
-This guide explains how to integrate the Homei Orchestrator with RAUC (Robust Auto-Update Client) for reliable A/B system updates on Jetson Nano.
+This guide explains how to integrate the Homie Orchestrator with RAUC (Robust Auto-Update Client) for reliable A/B system updates on Jetson Nano.
 
 ## Overview
 
@@ -21,7 +21,7 @@ RAUC provides atomic system updates using A/B partitioning. This ensures:
 │  │  (Active)   │  │ (Inactive)  │   │
 │  │             │  │             │   │
 │  │ Root FS     │  │ Root FS     │   │
-│  │ Homei       │  │ Homei       │   │
+│  │ Homie       │  │ Homie       │   │
 │  │ Orchestrator│  │ Orchestrator│   │
 │  └─────────────┘  └─────────────┘   │
 │                                     │
@@ -91,7 +91,7 @@ Create `/etc/rauc/system.conf`:
 
 ```ini
 [system]
-compatible=jetson-nano-homei
+compatible=jetson-nano-homie
 bootloader=uboot
 bundle-formats=plain
 
@@ -123,7 +123,7 @@ openssl req -x509 -newkey rsa:4096 -nodes \
     -keyout /tmp/ca.key.pem \
     -out /tmp/ca.cert.pem \
     -days 7300 \
-    -subj "/CN=Homei RAUC CA"
+    -subj "/CN=Homie RAUC CA"
 
 # Install certificate
 sudo cp /tmp/ca.cert.pem /etc/rauc/
@@ -222,7 +222,7 @@ services:
     volumes:
       - "/data/redis:/data"
   
-  homei_core:
+  homie_core:
     volumes:
       - "/data/config/core:/config"
       - "/data/core:/data"
@@ -249,9 +249,9 @@ Create `bundle.conf`:
 
 ```ini
 [update]
-compatible=jetson-nano-homei
+compatible=jetson-nano-homie
 version=1.1.0
-description=Homei Orchestrator Update v1.1.0
+description=Homie Orchestrator Update v1.1.0
 build=$(date +%Y%m%d%H%M%S)
 
 [bundle]
@@ -290,17 +290,17 @@ sudo chroot "$ROOTFS_DIR" apt-get install -y \
     git
 
 # Copy orchestrator code
-sudo cp -r /opt/homei_orchestrator "$ROOTFS_DIR/opt/"
+sudo cp -r /opt/homie_orchestrator "$ROOTFS_DIR/opt/"
 
 # Install Python dependencies
-sudo chroot "$ROOTFS_DIR" pip3 install -r /opt/homei_orchestrator/requirements.txt
+sudo chroot "$ROOTFS_DIR" pip3 install -r /opt/homie_orchestrator/requirements.txt
 
 # Create systemd service
-sudo cp /etc/systemd/system/homei-orchestrator.service \
+sudo cp /etc/systemd/system/homie-orchestrator.service \
     "$ROOTFS_DIR/etc/systemd/system/"
 
 # Enable service
-sudo chroot "$ROOTFS_DIR" systemctl enable homei-orchestrator
+sudo chroot "$ROOTFS_DIR" systemctl enable homie-orchestrator
 
 # Create filesystem image
 sudo dd if=/dev/zero of="$ROOTFS_IMAGE" bs=1M count=4096
@@ -331,7 +331,7 @@ case "$1" in
         echo "Preparing for update..."
         
         # Stop orchestrator service
-        systemctl stop homei-orchestrator || true
+        systemctl stop homie-orchestrator || true
         
         # Create backup
         mkdir -p /data/backups/pre-update
@@ -354,7 +354,7 @@ case "$1" in
         echo "Post-install configuration..."
         
         # Update Docker images
-        cd /opt/homei_orchestrator
+        cd /opt/homie_orchestrator
         docker-compose pull
         
         # Run database migrations if needed
@@ -376,7 +376,7 @@ case "$1" in
         echo "Activating new system..."
         
         # Start orchestrator service
-        systemctl start homei-orchestrator
+        systemctl start homie-orchestrator
         
         # Wait for service to be ready
         sleep 30
@@ -399,7 +399,7 @@ esac
 # create-bundle.sh
 
 BUNDLE_DIR="bundle"
-BUNDLE_NAME="homei-orchestrator-v1.1.0.raucb"
+BUNDLE_NAME="homie-orchestrator-v1.1.0.raucb"
 
 # Create bundle directory
 mkdir -p "$BUNDLE_DIR/update-hooks"
@@ -425,7 +425,7 @@ echo "Bundle created: $BUNDLE_NAME"
 
 ```bash
 # Install update bundle
-sudo rauc install homei-orchestrator-v1.1.0.raucb
+sudo rauc install homie-orchestrator-v1.1.0.raucb
 
 # Check status
 rauc status
@@ -440,10 +440,10 @@ Create update service:
 
 ```bash
 # Create update script
-cat > /opt/homei_orchestrator/scripts/update.sh << 'EOF'
+cat > /opt/homie_orchestrator/scripts/update.sh << 'EOF'
 #!/bin/bash
 
-UPDATE_URL="${1:-http://updates.homei.local/latest.raucb}"
+UPDATE_URL="${1:-http://updates.homie.local/latest.raucb}"
 TEMP_BUNDLE="/tmp/update.raucb"
 
 # Download update bundle
@@ -463,7 +463,7 @@ else
 fi
 EOF
 
-chmod +x /opt/homei_orchestrator/scripts/update.sh
+chmod +x /opt/homie_orchestrator/scripts/update.sh
 ```
 
 ### Orchestrator API Integration

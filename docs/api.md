@@ -1,6 +1,6 @@
 # API Reference
 
-This document provides comprehensive API documentation for the Homei Orchestrator REST API.
+This document provides comprehensive API documentation for the Homie Orchestrator REST API.
 
 ## Base URL
 
@@ -87,8 +87,8 @@ GET /api/v1/services
       "restart_policy": "unless-stopped",
       "created_at": "2024-01-15T10:00:00Z",
       "labels": {
-        "io.homei.managed": "true",
-        "io.homei.service": "database"
+        "io.homie.managed": "true",
+        "io.homie.service": "database"
       }
     }
   ]
@@ -112,15 +112,15 @@ GET /api/v1/services/{service_name}
   "enabled": true,
   "restart_policy": "unless-stopped",
   "environment": {
-    "POSTGRES_DB": "homei",
-    "POSTGRES_USER": "homei"
+    "POSTGRES_DB": "homie",
+    "POSTGRES_USER": "homie"
   },
   "ports": ["5432:5432"],
   "volumes": ["/data/postgres:/var/lib/postgresql/data"],
   "depends_on": [],
   "labels": {
-    "io.homei.managed": "true",
-    "io.homei.service": "database"
+    "io.homie.managed": "true",
+    "io.homie.service": "database"
   },
   "created_at": "2024-01-15T10:00:00Z",
   "updated_at": "2024-01-15T10:00:00Z"
@@ -148,7 +148,7 @@ POST /api/v1/services
   "ports": ["80:80"],
   "volumes": ["/data/nginx:/var/www/html"],
   "labels": {
-    "io.homei.service": "webserver"
+    "io.homie.service": "webserver"
   }
 }
 ```
@@ -319,7 +319,7 @@ GET /api/v1/containers/{container_id}
   },
   "config": {
     "hostname": "abc123def456",
-    "env": ["POSTGRES_DB=homei"],
+    "env": ["POSTGRES_DB=homie"],
     "cmd": ["docker-entrypoint.sh", "postgres"]
   },
   "network_settings": {
@@ -476,7 +476,7 @@ GET /api/v1/update/status
 **Response:**
 ```json
 {
-  "compatible": "jetson-nano-homei",
+  "compatible": "jetson-nano-homie",
   "booted": "rootfs.0",
   "slots": [
     {
@@ -522,7 +522,7 @@ POST /api/v1/update/install
 **Request Body:**
 ```json
 {
-  "bundle_path": "/data/updates/homei-v1.1.0.raucb"
+  "bundle_path": "/data/updates/homie-v1.1.0.raucb"
 }
 ```
 
@@ -562,15 +562,15 @@ GET /metrics
 
 **Response:**
 ```
-# HELP homei_containers_total Total number of containers
-# TYPE homei_containers_total gauge
-homei_containers_total{status="running"} 3
-homei_containers_total{status="stopped"} 1
+# HELP homie_containers_total Total number of containers
+# TYPE homie_containers_total gauge
+homie_containers_total{status="running"} 3
+homie_containers_total{status="stopped"} 1
 
-# HELP homei_services_total Total number of managed services
-# TYPE homei_services_total gauge
-homei_services_total{enabled="true"} 3
-homei_services_total{enabled="false"} 0
+# HELP homie_services_total Total number of managed services
+# TYPE homie_services_total gauge
+homie_services_total{enabled="true"} 3
+homie_services_total{enabled="false"} 0
 ```
 
 ### System Information
@@ -618,7 +618,7 @@ GET /api/v1/config
 ```json
 {
   "orchestrator": {
-    "name": "Homei Orchestrator",
+    "name": "Homie Orchestrator",
     "version": "1.0.0",
     "api": {
       "host": "0.0.0.0",

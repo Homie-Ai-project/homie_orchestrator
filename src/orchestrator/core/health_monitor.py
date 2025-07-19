@@ -1,5 +1,5 @@
 """
-Health Monitor for Homei Orchestrator
+Health Monitor for Homie Orchestrator
 
 Monitors the health of managed containers and services.
 """

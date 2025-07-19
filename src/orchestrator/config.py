@@ -1,5 +1,5 @@
 """
-Configuration management for Homei Orchestrator
+Configuration management for Homie Orchestrator
 """
 
 import os
@@ -29,7 +29,7 @@ class SecurityConfig(BaseModel):
 class DockerConfig(BaseModel):
     """Docker configuration"""
     socket_path: str = "/var/run/docker.sock"
-    network_name: str = "homei_network"
+    network_name: str = "homie_network"
     registry_url: Optional[str] = "docker.io"
     registry_username: Optional[str] = None
     registry_password: Optional[str] = None
@@ -44,7 +44,7 @@ class StorageConfig(BaseModel):
 
 class DatabaseConfig(BaseModel):
     """Database configuration"""
-    url: str = "postgresql+asyncpg://homei:homei_password@postgres:5432/homei"
+    url: str = "postgresql+asyncpg://homie:homie_password@postgres:5432/homie"
     pool_size: int = 10
     max_overflow: int = 20
 
@@ -76,7 +76,7 @@ class BackupConfig(BaseModel):
 
 class OrchestratorConfig(BaseModel):
     """Main orchestrator configuration"""
-    name: str = "Homei Orchestrator"
+    name: str = "Homie Orchestrator"
     version: str = "1.0.0"
     timezone: str = "UTC"
     api: APIConfig = Field(default_factory=APIConfig)

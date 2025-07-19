@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "=== Homei Orchestrator Health Check ==="
+echo "=== Homie Orchestrator Health Check ==="
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -53,11 +53,11 @@ done
 
 # Check networks
 echo -e "\nChecking networks..."
-if docker network ls | grep -q "homei_network"; then
-    print_status 0 "homei_network exists"
+if docker network ls | grep -q "homie_network"; then
+    print_status 0 "homie_network exists"
 else
-    print_status 1 "homei_network does not exist"
-    print_warning "Run: docker network create homei_network"
+    print_status 1 "homie_network does not exist"
+    print_warning "Run: docker network create homie_network"
 fi
 
 # Check API
@@ -83,7 +83,7 @@ fi
 
 # Check database connectivity
 echo -e "\nChecking database..."
-if docker exec postgres psql -U homei -d homei -c "SELECT 1;" >/dev/null 2>&1; then
+if docker exec postgres psql -U homie -d homie -c "SELECT 1;" >/dev/null 2>&1; then
     print_status 0 "Database is accessible"
 else
     print_status 1 "Database is not accessible"

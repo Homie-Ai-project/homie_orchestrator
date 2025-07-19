@@ -1,5 +1,5 @@
 """
-Database module for Homei Orchestrator
+Database module for Homie Orchestrator
 
 Handles database connections and operations.
 """

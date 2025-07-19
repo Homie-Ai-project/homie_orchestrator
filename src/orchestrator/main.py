@@ -1,5 +1,5 @@
 """
-Homei Orchestrator Main Application
+Homie Orchestrator Main Application
 
 A supervisor-like container management system for AI workloads and services.
 This orchestrator manages Docker containers, handles updates, backups, and provides
@@ -50,7 +50,7 @@ class OrchestratorApp:
     def __init__(self):
         self.settings = get_settings()
         self.app = FastAPI(
-            title="Homei Orchestrator",
+            title="Homie Orchestrator",
             description="Container management and supervision system",
             version=self.settings.orchestrator.version,
             docs_url="/docs",
@@ -70,7 +70,7 @@ class OrchestratorApp:
         
     async def startup(self):
         """Initialize all orchestrator components"""
-        logger.info("Starting Homei Orchestrator", version=self.settings.orchestrator.version)
+        logger.info("Starting Homie Orchestrator", version=self.settings.orchestrator.version)
         
         try:
             # Initialize database
@@ -123,7 +123,7 @@ class OrchestratorApp:
     
     async def shutdown(self):
         """Gracefully shutdown all components"""
-        logger.info("Shutting down Homei Orchestrator")
+        logger.info("Shutting down Homie Orchestrator")
         
         # Stop components in reverse order
         if self.backup_manager:
