@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile.orchestrator
+    container_name: homei_orchestrator
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./config:/config
+      - ./data:/data
+      - ./backups:/backups
+      - /tmp:/tmp
+    environment:
+      - ORCHESTRATOR_DATA_PATH=/data
+      - ORCHESTRATOR_CONFIG_PATH=/config
+      - ORCHESTRATOR_BACKUP_PATH=/backups
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    ports:
+      - "8080:8080"  # Orchestrator API
+    networks:
+      - homei_network
+    labels:
+      - "io.homei.orchestrator=true"
+      - "io.homei.role=supervisor"
+
+  # Managed AI service - this would be managed by the orchestrator
+  homei_ai:
+    image: homei/ai:latest
+    container_name: homei_ai
+    restart: unless-stopped
+    depends_on:
+      - orchestrator
+    volumes:
+      - ./config/ai:/config
+      - ./data/ai:/data
+    environment:
+      - ORCHESTRATOR_URL=http://orchestrator:8080
+      - OLLAMA_BASE_URL=http://ollama:11434
+    ports:
+      - "8080:8080"  # Open WebUI
+      - "3000:3000"  # React Chat Interface
+    networks:
+      - homei_network
+    labels:
+      - "io.homei.managed=true"
+      - "io.homei.service=ai"
+
+  # Ollama AI service managed by orchestrator
+  ollama:
+    image: ollama/ollama:latest
+    container_name: homei_ollama
+    restart: unless-stopped
+    depends_on:
+      - orchestrator
+    volumes:
+      - ./data/ollama:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    ports:
+      - "11434:11434"
+    networks:
+      - homei_network
+    labels:
+      - "io.homei.managed=true"
+      - "io.homei.service=ollama"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Database service managed by orchestrator
+  postgres:
+    image: postgres:15
+    container_name: homei_postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=homei
+      - POSTGRES_USER=homei
+      - POSTGRES_PASSWORD=homei_password
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - homei_network
+    labels:
+      - "io.homei.managed=true"
+      - "io.homei.service=database"
+
+  # Redis service for caching and pub/sub
+  redis:
+    image: redis:7-alpine
+    container_name: homei_redis
+    restart: unless-stopped
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - homei_network
+    labels:
+      - "io.homei.managed=true"
+      - "io.homei.service=cache"
+
+networks:
+  homei_network:
+    driver: bridge
+    name: homei_network
+
+volumes:
+  orchestrator_data:
+  orchestrator_config:
+  orchestrator_backups:

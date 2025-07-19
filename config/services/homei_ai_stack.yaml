@@ -1,0 +1,137 @@
+# Homei AI Stack Configuration
+# Self-hosted AI platform with Ollama, Open WebUI, and React Chat Interface
+
+name: "homei_ai_stack"
+description: "Complete AI platform for private, secure, and unlimited local AI interactions"
+version: "1.0.0"
+
+services:
+  # Ollama - Local LLM inference engine
+  ollama:
+    image: "ollama/ollama:latest"
+    container_name: "homei-ollama"
+    restart: "unless-stopped"
+    ports:
+      - "11434:11434"
+    volumes:
+      - "ollama_data:/root/.ollama"
+    environment:
+      OLLAMA_HOST: "0.0.0.0"
+    networks:
+      - "homei_ai_network"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "ollama"
+      io.homei.category: "ai"
+      io.homei.backup: "true"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  # Open WebUI - Advanced web interface with authentication
+  open_webui:
+    image: "ghcr.io/open-webui/open-webui:main"
+    container_name: "homei-open-webui"
+    restart: "unless-stopped"
+    ports:
+      - "8080:8080"
+    volumes:
+      - "open_webui_data:/app/backend/data"
+    environment:
+      OLLAMA_BASE_URL: "http://ollama:11434"
+      WEBUI_SECRET_KEY: "homei-ai-secret-key-2025"
+    depends_on:
+      - ollama
+    networks:
+      - "homei_ai_network"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "open_webui"
+      io.homei.category: "ai"
+      io.homei.backup: "true"
+
+  # React Chat App - Lightweight custom interface
+  react_chat:
+    build:
+      context: "../homei_ai/catGPT"
+      dockerfile: "Dockerfile"
+    container_name: "homei-react-chat"
+    restart: "unless-stopped"
+    ports:
+      - "3000:3000"
+    volumes:
+      - "../homei_ai/catGPT:/app"
+      - "/app/node_modules"
+    environment:
+      VITE_OLLAMA_API_URL: "http://localhost:11434"
+    depends_on:
+      - ollama
+    networks:
+      - "homei_ai_network"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "react_chat"
+      io.homei.category: "ai"
+      io.homei.backup: "false"
+
+networks:
+  homei_ai_network:
+    driver: bridge
+    name: "homei_ai_network"
+
+volumes:
+  ollama_data:
+    name: "homei_ollama_data"
+  open_webui_data:
+    name: "homei_open_webui_data"
+
+# Health checks
+health_checks:
+  ollama:
+    test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+    interval: "30s"
+    timeout: "10s"
+    retries: 3
+    start_period: "60s"
+  
+  open_webui:
+    test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+    interval: "30s"
+    timeout: "10s"
+    retries: 3
+    start_period: "30s"
+
+  react_chat:
+    test: ["CMD", "curl", "-f", "http://localhost:3000"]
+    interval: "30s"
+    timeout: "10s"
+    retries: 3
+    start_period: "30s"
+
+# Backup configuration
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 7
+  paths:
+    - "ollama_data"
+    - "open_webui_data"
+
+# Monitoring configuration
+monitoring:
+  enabled: true
+  metrics:
+    - gpu_utilization
+    - memory_usage
+    - ollama_requests_per_second
+    - model_inference_time
+
+# Update configuration
+updates:
+  auto_update: false
+  update_window: "02:00-04:00"
+  rollback_enabled: true

@@ -1,0 +1,55 @@
+version: '3.8'
+
+# Development overrides for docker-compose.yml
+services:
+  orchestrator:
+    build:
+      context: .
+      dockerfile: Dockerfile.orchestrator
+      target: development
+    volumes:
+      - ./src:/app/src:ro
+      - ./config:/config
+      - ./data:/data
+      - ./backups:/backups
+    environment:
+      - ORCHESTRATOR_DEBUG=true
+      - LOG_LEVEL=DEBUG
+    command: ["python", "-m", "src.orchestrator.main", "--reload"]
+    
+  # Development database with exposed port
+  postgres:
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=homei_dev
+      - POSTGRES_USER=homei_dev
+      - POSTGRES_PASSWORD=homei_dev_password
+  
+  # Development Redis with exposed port
+  redis:
+    ports:
+      - "6379:6379"
+
+# Additional development services
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8081:8080"
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    networks:
+      - homei_network
+    depends_on:
+      - postgres
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    ports:
+      - "8082:8081"
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    networks:
+      - homei_network
+    depends_on:
+      - redis

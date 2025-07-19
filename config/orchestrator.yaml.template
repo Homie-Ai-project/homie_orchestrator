@@ -1,0 +1,134 @@
+# Homei Orchestrator Configuration
+orchestrator:
+  # Basic configuration
+  name: "Homei Orchestrator"
+  version: "1.0.0"
+  timezone: "UTC"
+  
+  # API Configuration
+  api:
+    host: "0.0.0.0"
+    port: 8080
+    cors_origins:
+      - "*"
+    
+  # Security
+  security:
+    secret_key: "${ORCHESTRATOR_SECRET_KEY:-changeme}"
+    access_token_expire_minutes: 60
+    refresh_token_expire_days: 30
+    
+  # Docker Configuration
+  docker:
+    socket_path: "/var/run/docker.sock"
+    network_name: "homei_network"
+    registry:
+      url: "docker.io"
+      username: null
+      password: null
+    
+  # Storage Configuration
+  storage:
+    data_path: "/data"
+    config_path: "/config"
+    backup_path: "/backups"
+    
+  # Database Configuration
+  database:
+    url: "postgresql+asyncpg://homei:homei_password@postgres:5432/homei"
+    pool_size: 10
+    max_overflow: 20
+    
+  # Redis Configuration
+  redis:
+    url: "redis://redis:6379/0"
+    
+  # Logging Configuration
+  logging:
+    level: "INFO"
+    format: "structured"
+    
+  # Monitoring
+  monitoring:
+    enabled: true
+    metrics_port: 9090
+    health_check_interval: 30
+    
+  # Backup Configuration
+  backup:
+    enabled: true
+    schedule: "0 2 * * *"  # Daily at 2 AM
+    retention_days: 30
+    
+# Managed Services Configuration
+services:
+  # AI application service
+  homei_ai:
+    image: "homei/ai:latest"
+    enabled: true
+    restart_policy: "unless-stopped"
+    environment:
+      POSTGRES_URL: "postgresql://homei:homei_password@postgres:5432/homei"
+      REDIS_URL: "redis://redis:6379/0"
+      OLLAMA_BASE_URL: "http://ollama:11434"
+    ports:
+      - "8080:8080"  # Open WebUI
+      - "3000:3000"  # React Chat Interface
+    volumes:
+      - "./config/ai:/config"
+      - "./data/ai:/data"
+    depends_on:
+      - postgres
+      - redis
+      - ollama
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "ai"
+
+  # Ollama AI service
+  ollama:
+    image: "ollama/ollama:latest"
+    enabled: true
+    restart_policy: "unless-stopped"
+    environment:
+      OLLAMA_HOST: "0.0.0.0"
+    ports:
+      - "11434:11434"
+    volumes:
+      - "./data/ollama:/root/.ollama"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "ollama"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+      
+  # Database service
+  postgres:
+    image: "postgres:15"
+    enabled: true
+    restart_policy: "unless-stopped"
+    environment:
+      POSTGRES_DB: "homei"
+      POSTGRES_USER: "homei"
+      POSTGRES_PASSWORD: "homei_password"
+    volumes:
+      - "./data/postgres:/var/lib/postgresql/data"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "database"
+      
+  # Cache service
+  redis:
+    image: "redis:7-alpine"
+    enabled: true
+    restart_policy: "unless-stopped"
+    volumes:
+      - "./data/redis:/data"
+    labels:
+      io.homei.managed: "true"
+      io.homei.service: "cache"
