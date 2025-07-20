@@ -2,7 +2,6 @@
 
 > **Transform your home into a production-grade AI powerhouse with zero ```bash
 curl -fsSL https://get.homieos.com/install.sh | bash
-```
 
 - 📧 **Email:** hello@homieos.comOps complexity!**
 
@@ -60,7 +59,6 @@ The Homie Orchestrator is the **missing piece** between simple Docker containers
 ## 🏗️ Architecture That Scales
 
 Built on battle-tested principles from the world's most reliable systems:
-```
 
 ```
 Client Layer:
@@ -80,7 +78,6 @@ Data Layer:
 └── 🗄️ PostgreSQL Database
 ```
 
-```
 **Why This Architecture Rocks:**
 - 🔄 **Microservices done right** - each component has a single responsibility
 - 🚀 **Horizontally scalable** - add more orchestrator instances as you grow
