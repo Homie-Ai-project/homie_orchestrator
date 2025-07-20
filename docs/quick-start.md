@@ -360,7 +360,7 @@ homie debug-report > debug.txt
 - 💬 **Discord:** Instant help from the community
 - 📧 **Email:** support@homieos.com for technical issues
 - 📖 **Docs:** docs.homieos.com for detailed guides
-- 🎥 **Video Tutorials:** youtube.com/homie-io
+- 🎥 **Video Tutorials:** youtube.com/homie-ai
 
 ---
 

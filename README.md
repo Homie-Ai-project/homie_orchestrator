@@ -453,8 +453,8 @@ curl -fsSL https://get.homie.io/install.sh | bash
 
 **Questions? We're here to help!**
 - 📧 **Email:** hello@homieos.com
-- 💬 **Discord:** [discord.gg/homieAi](https://discord.gg/homieAi)
-- 🐛 **Issues:** [GitHub Issues](https://github.com/HomieAiOS/homie_orchestrator/issues)
+- 💬 **Discord:** [discord.gg/homieAi](https://discord.gg/k64erSMgcX)
+- 🐛 **Issues:** [GitHub Issues](https://github.com/Homie-Ai-project/homie_orchestrator/issues)
 - 📖 **Docs:** [docs.homieos.com](https://docs.homieos.com)
 
 ---
