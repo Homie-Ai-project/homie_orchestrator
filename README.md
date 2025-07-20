@@ -61,7 +61,6 @@ The Homie Orchestrator is the **missing piece** between simple Docker containers
 
 Built on battle-tested principles from the world's most reliable systems:
 
-```
 Client Layer:
 ├── 🎮 Web UI
 ├── 📱 Mobile App  
@@ -77,7 +76,6 @@ Service Layer:
  ↓
 Data Layer:
 └── 🗄️ PostgreSQL Database
-```
 
 **Why This Architecture Rocks:**
 - 🔄 **Microservices done right** - each component has a single responsibility
