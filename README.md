@@ -1,6 +1,5 @@
 # 🚀 Homie Orchestrator
-
-> **Transform your home into a production-grade AI powerhouse with zero ```bash
+> Transform your home into a production-grade AI powerhouse with zero
 - 📧 **Email:** hello@homieos.com
 
 The Homie Orchestrator is the **missing piece** between simple Docker containers and complex Kubernetes clusters. Inspired by enterprise-grade supervisor architectures, it brings production-level container orchestration to your home AI infrastructure, edge devices, and self-hosted AI APIs with the simplicity you've been craving.
